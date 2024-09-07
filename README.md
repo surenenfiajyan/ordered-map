@@ -1,6 +1,6 @@
 # OrderedMap
 ## Description
-An implementation an orderd map in JS
+An implementation of an orderd map in JS.
 ## How to use
 Modern JS supports [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object, which is useful in a lot of cases as a fast associative key - value storage. However it doesn't support ordering by keys. OrderedMap adds this functionality, it supports all the methods that a normal Map has and is compatible with it.
 
@@ -140,6 +140,17 @@ It adds additional functionality that keeps the keys ordered.
 	```index``` is the index of the current element being processed.
 
 	```comporatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
+
+## Algorithmic complexity (worst case)
+| Operation | Complexity|
+| :---:   | :---: |
+| Search | `log(n)`   |
+| Insertion | `log(n)`   |
+| Deletion | `log(n)`   |
+| Construction from generic iterable | `n * log(n)`   |
+| Construction from another OrderedMap | `n`  |
+| Searching n-th key / value | `log(n)`  |
+| Iteration from n-th entry | `k + log(n)`|
 
 ## License
 [MIT license](https://github.com/surenenfiajyan/ordered-map/blob/main/LICENSE)
