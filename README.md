@@ -127,5 +127,19 @@ It adds additional functionality that keeps the keys ordered.
 	groupBy(iterable, callbackFn)
 	groupBy(iterable, callbackFn, comporatorFn)
 	```
+	#### Description
+	Groups the elements of a given iterable using the values returned by a provided callback function. The final returned OrderedMap uses the unique values from the test function as keys, which can be used to get the array of elements in each group.
+
+
+	```iterable``` is an iterable (such as an Array) whose elements will be grouped.
+
+	```callbackFn(element, index)``` is a function to execute for each element in the iterable. It should return a value (object or primitive) indicating the group of the current element.
+
+	```element``` is current element being processed.
+
+	```index``` is the index of the current element being processed.
+
+	```comporatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
+
 ## License
 [MIT license](https://github.com/surenenfiajyan/ordered-map/blob/main/LICENSE)
