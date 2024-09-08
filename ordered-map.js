@@ -53,6 +53,11 @@ class OrderedMap {
 
 	#findIndex(key, node, exactMatch = false) {
 		const keys = node.keys;
+
+		if (!keys.length) {
+			return -1;
+		}
+
 		let a = 0, b = keys.length;
 
 		do {
