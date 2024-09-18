@@ -3,8 +3,9 @@ class OrderedMap {
 	static #maxChildren = 64;
 
 	#root = null;
+	#compareKeys = OrderedMap.#comporator;
 
-	#compareKeys = (k1, k2) => {
+	static #comporator = (k1, k2) => {
 		function getType(val) {
 			return val === null ? 'null' : typeof val;
 		}
@@ -30,7 +31,7 @@ class OrderedMap {
 					return typeDiff2;
 				}
 
-				return this.#compareKeys(v1, v2);
+				return this.#comporator(v1, v2);
 			case 'number':
 				const nan1 = isNaN(k1), nan2 = isNaN(k2);
 				const nanDiff = nan2 - nan1;
@@ -202,6 +203,8 @@ class OrderedMap {
 		}
 
 		if (iterable instanceof OrderedMap) {
+			this.#compareKeys = iterable.#compareKeys;
+
 			if (iterable.#root) {
 				this.#deepCopy(iterable.#root);
 			}
