@@ -108,7 +108,7 @@ It adds additional functionality that keeps the keys ordered.
 	#### Description
 	Executes a provided function once per each key/value pair in this map.
 
-	```callbackFn(value, key, map)``` is function to execute for each entry in the map. 
+	```callbackFn(value, key, map)``` is afunction to execute for each entry in the map. 
 	
 	```value``` is the value of each iteration.
 
@@ -147,7 +147,7 @@ It adds additional functionality that keeps the keys ordered.
 | Search | `log(n)`   |
 | Insertion | `log(n)`   |
 | Deletion | `log(n)`   |
-| Construction from generic iterable | `n * log(n)`   |
+| Construction from generic iterable / groupBy() | `n * log(n)`   |
 | Construction from another OrderedMap | `n`  |
 | Searching n-th key / value | `log(n)`  |
 | Iteration from n-th entry | `count + log(n)`|
