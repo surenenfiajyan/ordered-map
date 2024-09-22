@@ -2,7 +2,7 @@
 ## Description
 An implementation of an orderd map in JS.
 ## How to use
-Modern JS supports [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object, which is useful in a lot of cases as a fast associative key - value storage. However it doesn't support ordering by keys. OrderedMap adds this functionality, it supports all the methods that a normal Map has and is compatible with it.
+Modern JS supports [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object, which is useful in a lot of cases as a fast associative key - value storage. However it doesn't support ordering by keys. OrderedMap adds this functionality, it supports all the methods that a normal Map has and is compatible with it, with the only current limitation is that the iteration is not guaranteed to be correct when the map modified during iteration (this is a performance and memory usage tradeoff, I might work on this in the future).
 
 It adds additional functionality that keeps the keys ordered.
 
