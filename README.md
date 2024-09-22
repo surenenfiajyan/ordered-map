@@ -148,7 +148,7 @@ It adds additional functionality that keeps the keys ordered.
 | Insertion | `log(n)`   |
 | Deletion | `log(n)`   |
 | Construction from generic iterable / groupBy() | `n * log(n)`   |
-| Construction from another OrderedMap | `n`  |
+| Construction from another OrderedMap (with the same comporator) | `n`  |
 | Searching n-th key / value | `log(n)`  |
 | Iteration from n-th entry | `count + log(n)`|
 

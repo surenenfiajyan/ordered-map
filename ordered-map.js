@@ -169,14 +169,14 @@ class OrderedMap {
 
 	static groupBy(iterable, callbackFn, comporatorFn = null) {
 		const map = new OrderedMap(comporatorFn);
-		
+
 		let index = 0;
-		
+
 		for (const item of iterable) {
 			const key = callbackFn(item, index++);
 
 			let arr = map.get(key);
-			
+
 			if (!arr) {
 				arr = [];
 				map.set(key, arr);
@@ -189,24 +189,28 @@ class OrderedMap {
 	}
 
 	constructor(...args) {
-		let iterable;
+		let iterable, compareKeys;
 
 		if (args.length > 1) {
 			iterable = args[0];
-			this.#compareKeys = args[1];
+			this.#compareKeys = compareKeys = args[1];
 		} else if (args.length === 1) {
 			if (typeof args[0] === 'function') {
-				this.#compareKeys = args[0];
+				this.#compareKeys = compareKeys = args[0];
 			} else {
 				iterable = args[0];
 			}
 		}
 
 		if (iterable instanceof OrderedMap) {
-			this.#compareKeys = iterable.#compareKeys;
+			if (!compareKeys || compareKeys === iterable.#compareKeys) {
+				this.#compareKeys = iterable.#compareKeys;
 
-			if (iterable.#root) {
-				this.#deepCopy(iterable.#root);
+				if (iterable.#root) {
+					this.#deepCopy(iterable.#root);
+				}
+			} else {
+				iterable.forEach((v, k) => this.set(k, v));
 			}
 
 			return;
