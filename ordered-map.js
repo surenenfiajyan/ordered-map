@@ -452,20 +452,41 @@ class OrderedMap {
 		let [node, idx] = this.#findContainingNodeByStartingIndex(startIndex);
 		count = count != null ? Math.floor(Number(count)) : null;
 
-		while (node) {
-			if (count !== null) {
-				while (idx < node.values.length && --count >= 0) {
-					yield node.keys[idx];
-					++idx;
-				}
-			} else {
+		if (count === null) {
+			while (node) {
 				do {
 					yield node.keys[idx];
-				} while (++idx < node.values.length);
-			}
+				} while (++idx < node.keys.length);
 
-			node = node.next;
-			idx = 0;
+				node = node.next;
+				idx = 0;
+			}
+		} else if (count > 0) {
+			while (node) {
+				do {
+					if (--count < 0) {
+						return;
+					}
+
+					yield node.keys[idx];
+				} while (++idx < node.keys.length);
+
+				node = node.next;
+				idx = 0;
+			}
+		} else {
+			while (node) {
+				do {
+					if (++count > 0) {
+						return;
+					}
+
+					yield node.keys[idx];
+				} while (--idx >= 0);
+
+				node = node.prev;
+				idx = node?.keys.length - 1;
+			}
 		}
 	}
 
@@ -473,20 +494,41 @@ class OrderedMap {
 		let [node, idx] = this.#findContainingNodeByStartingIndex(startIndex);
 		count = count != null ? Math.floor(Number(count)) : null;
 
-		while (node) {
-			if (count !== null) {
-				while (idx < node.values.length && --count >= 0) {
-					yield node.values[idx];
-					++idx;
-				}
-			} else {
+		if (count === null) {
+			while (node) {
 				do {
 					yield node.values[idx];
-				} while (++idx < node.values.length);
-			}
+				} while (++idx < node.keys.length);
 
-			node = node.next;
-			idx = 0;
+				node = node.next;
+				idx = 0;
+			}
+		} else if (count > 0) {
+			while (node) {
+				do {
+					if (--count < 0) {
+						return;
+					}
+
+					yield node.values[idx];
+				} while (++idx < node.keys.length);
+
+				node = node.next;
+				idx = 0;
+			}
+		} else {
+			while (node) {
+				do {
+					if (++count > 0) {
+						return;
+					}
+
+					yield node.values[idx];
+				} while (--idx >= 0);
+
+				node = node.prev;
+				idx = node?.keys.length - 1;
+			}
 		}
 	}
 
@@ -494,20 +536,41 @@ class OrderedMap {
 		let [node, idx] = this.#findContainingNodeByStartingIndex(startIndex);
 		count = count != null ? Math.floor(Number(count)) : null;
 
-		while (node) {
-			if (count !== null) {
-				while (idx < node.values.length && --count >= 0) {
-					yield [node.keys[idx], node.values[idx]];
-					++idx;
-				}
-			} else {
+		if (count === null) {
+			while (node) {
 				do {
 					yield [node.keys[idx], node.values[idx]];
-				} while (++idx < node.values.length);
-			}
+				} while (++idx < node.keys.length);
 
-			node = node.next;
-			idx = 0;
+				node = node.next;
+				idx = 0;
+			}
+		} else if (count > 0) {
+			while (node) {
+				do {
+					if (--count < 0) {
+						return;
+					}
+
+					yield [node.keys[idx], node.values[idx]];
+				} while (++idx < node.keys.length);
+
+				node = node.next;
+				idx = 0;
+			}
+		} else {
+			while (node) {
+				do {
+					if (++count > 0) {
+						return;
+					}
+
+					yield [node.keys[idx], node.values[idx]];
+				} while (--idx >= 0);
+
+				node = node.prev;
+				idx = node?.keys.length - 1;
+			}
 		}
 	}
 
@@ -515,20 +578,41 @@ class OrderedMap {
 		let [node, idx] = this.#findContainingNodeByStartingIndex(startIndex);
 		count = count != null ? Math.floor(Number(count)) : null;
 
-		while (node) {
-			if (count !== null) {
-				while (idx < node.values.length && --count >= 0) {
-					callbackFn.call(thisArg, node.values[idx], node.keys[idx], this);
-					++idx;
-				}
-			} else {
+		if (count === null) {
+			while (node) {
 				do {
 					callbackFn.call(thisArg, node.values[idx], node.keys[idx], this);
-				} while (++idx < node.values.length);
-			}
+				} while (++idx < node.keys.length);
 
-			node = node.next;
-			idx = 0;
+				node = node.next;
+				idx = 0;
+			}
+		} else if (count > 0) {
+			while (node) {
+				do {
+					if (--count < 0) {
+						return;
+					}
+
+					callbackFn.call(thisArg, node.values[idx], node.keys[idx], this);
+				} while (++idx < node.keys.length);
+
+				node = node.next;
+				idx = 0;
+			}
+		} else {
+			while (node) {
+				do {
+					if (++count > 0) {
+						return;
+					}
+
+					callbackFn.call(thisArg, node.values[idx], node.keys[idx], this);
+				} while (--idx >= 0);
+
+				node = node.prev;
+				idx = node?.keys.length - 1;
+			}
 		}
 	}
 }

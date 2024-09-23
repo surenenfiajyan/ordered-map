@@ -71,7 +71,7 @@ It adds additional functionality that keeps the keys ordered.
 	
 	```startIndex``` is the first key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of keys that should be taken, if ommitted all the available keys are taken.
+	```count``` is the maximum number of keys that should be taken, if ommitted all the available keys are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 * ```values()```
  	#### Signatures
@@ -85,7 +85,7 @@ It adds additional functionality that keeps the keys ordered.
 	
 	```startIndex``` is the first value associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of values that should be taken, if ommitted all the available values are taken.
+	```count``` is the maximum number of values that should be taken, if ommitted all the available values are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 * ```entries()```
  	#### Signatures
@@ -99,7 +99,7 @@ It adds additional functionality that keeps the keys ordered.
 	
 	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of entries that should be taken, if ommitted all the available entries are taken.
+	```count``` is the maximum number of entries that should be taken, if ommitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 * ```forEach(callbackFn)```
  	#### Signatures
@@ -122,7 +122,7 @@ It adds additional functionality that keeps the keys ordered.
 
 	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of entries that should be taken, if ommitted all the available entries are taken.
+	```count``` is the maximum number of entries that should be taken, if ommitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 ### Static Methods / properties
 * ```groupBy()```
