@@ -254,6 +254,14 @@ class OrderedMap {
 		return node?.keys[idx];
 	}
 
+	getNthEntry(index) {
+		const [node, idx] = this.#findContainingNodeByStartingIndex(index);
+
+		if (node) {
+			return [node.keys[idx], node.values[idx]];
+		}
+	}
+
 	set(key, value) {
 		let child = this.#findContainingNode(key);
 

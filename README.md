@@ -47,6 +47,10 @@ It adds additional functionality that keeps the keys ordered.
 	#### Description
 	Searches for a key with an ordering index. Returns the key if present or ```undefined``` if not.
 	___
+* ```getNthEntry(index)```
+	#### Description
+	Searches for a ```[key, value]``` pair with an ordering index. Returns the pair if present or ```undefined``` if not.
+	___
 * ```delete(key)```
 	#### Description
 	Deletes the key and the associated value from the map. Returns  ```true``` if the key existed right before calling this method or ```false``` if not.
