@@ -41,15 +41,15 @@ It adds additional functionality that keeps the keys ordered.
 	___
 * ```getNth(index)```
 	#### Description
-	Searches for a value with its key ordering index. Returns the value if present or ```undefined``` if not.
+	Searches for a value with its key ordering index. Returns the value if present or ```undefined``` if not. If ```index``` is negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
 	___
 * ```getNthKey(index)```
 	#### Description
-	Searches for a key with an ordering index. Returns the key if present or ```undefined``` if not.
+	Searches for a key with an ordering index. Returns the key if present or ```undefined``` if not. If ```index``` is negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
 	___
 * ```getNthEntry(index)```
 	#### Description
-	Searches for a ```[key, value]``` pair with an ordering index. Returns the pair if present or ```undefined``` if not.
+	Searches for a ```[key, value]``` pair with an ordering index. Returns the pair if present or ```undefined``` if not. If ```index``` is negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
 	___
 * ```delete(key)```
 	#### Description
@@ -69,7 +69,7 @@ It adds additional functionality that keeps the keys ordered.
 	#### Description
 	Returns an iterator for the keys.
 	
-	```startIndex``` is the first key order index that the iteration should start from, by default it's ```0```. 
+	```startIndex``` is the first key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
 	```count``` is the maximum number of keys that should be taken, if ommitted all the available keys are taken.
 	___
@@ -83,7 +83,7 @@ It adds additional functionality that keeps the keys ordered.
 	#### Description
 	Returns an iterator for the values.
 	
-	```startIndex``` is the first value associated key order index that the iteration should start from, by default it's ```0```. 
+	```startIndex``` is the first value associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
 	```count``` is the maximum number of values that should be taken, if ommitted all the available values are taken.
 	___
@@ -97,7 +97,7 @@ It adds additional functionality that keeps the keys ordered.
 	#### Description
 	Returns an iterator for the entries (```[key, value]``` pairs). 
 	
-	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. 
+	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
 	```count``` is the maximum number of entries that should be taken, if ommitted all the available entries are taken.
 	___
@@ -120,7 +120,7 @@ It adds additional functionality that keeps the keys ordered.
 
 	```map``` is the map being iterated.
 
-	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. 
+	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
 	```count``` is the maximum number of entries that should be taken, if ommitted all the available entries are taken.
 	___

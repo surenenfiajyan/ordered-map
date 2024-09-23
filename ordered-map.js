@@ -97,11 +97,19 @@ class OrderedMap {
 		return node;
 	}
 
-	#findContainingNodeByStartingIndex(index = 0) {
+	#findContainingNodeByStartingIndex(index) {
 		index = Math.floor(Number(index));
 		let node = this.#root;
 
-		if (isNaN(index) || index < 0 || !node || node.count <= index) {
+		if (isNaN(index)) {
+			return [null, null];
+		}
+
+		if (index < 0) {
+			index = this.size + index;
+		}
+
+		if (index < 0 || !node || node.count <= index) {
 			return [null, null];
 		}
 
