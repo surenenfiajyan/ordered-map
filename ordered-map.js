@@ -270,6 +270,35 @@ class OrderedMap {
 		}
 	}
 
+	getIndex(key, isUpperBound = false) {
+		let index = this.size - 1, node = this.#root, comp = -1;
+
+		while (node) {
+			for (let i = node.keys.length - 1; i >= 0; --i) {
+				comp = this.#compareKeys(key, node.keys[i]);
+
+				if (comp >= 0) {
+					node = node.children?.[i];
+					break;
+				}
+
+				index -= node.children?.[i].count ?? 1;
+			}
+
+			if (comp < 0) {
+				break;
+			}
+		}
+
+		if (isUpperBound && comp) {
+			if (++index >= this.size) {
+				index = -1;
+			}
+		}
+
+		return index;
+	}
+
 	set(key, value) {
 		let child = this.#findContainingNode(key);
 

@@ -51,6 +51,19 @@ It adds additional functionality that keeps the keys ordered.
 	#### Description
 	Searches for a ```[key, value]``` pair with an ordering index. Returns the pair if present or ```undefined``` if not. If ```index``` is negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
 	___
+* ```getIndex(key)```
+ 	#### Signatures
+	```
+	getIndex(key)
+	getIndex(key, isUpperBound)
+	```
+	#### Description
+	Returns the index of the closest less or equal key or the greater or equal key. If no such key is found ```-1``` is retuned.
+	
+	```key``` is the searched key. 
+	
+	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key index is searched, otherwise the greater or equal key index.
+	___
 * ```delete(key)```
 	#### Description
 	Deletes the key and the associated value from the map. Returns  ```true``` if the key existed right before calling this method or ```false``` if not.
