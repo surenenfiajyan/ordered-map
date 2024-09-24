@@ -167,7 +167,8 @@ It adds additional functionality that keeps the keys ordered.
 | Construction from generic iterable / groupBy() | `n * log(n)`   |
 | Construction from another OrderedMap (with the same comporator) | `n`  |
 | Searching n-th key / value / entry | `log(n)`  |
-| Iteration from n-th entry | `count + log(n)`|
+| Finding the key index | `log(n)`  |
+| Iteration from k-th entry | `count + log(n)`|
 
 ## License
 [MIT license](https://github.com/surenenfiajyan/ordered-map/blob/main/LICENSE)
