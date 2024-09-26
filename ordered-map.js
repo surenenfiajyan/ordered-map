@@ -271,24 +271,34 @@ class OrderedMap {
 	}
 
 	getIndex(key, isUpperBound = false) {
-		let index = this.size - 1, node = this.#root, comp = -1;
+		let node = this.#root;
 
-		while (node) {
-			for (let i = node.keys.length - 1; i >= 0; --i) {
-				comp = this.#compareKeys(key, node.keys[i]);
+		if (!node) {
+			return - 1;
+		}
 
-				if (comp >= 0) {
-					node = node.children?.[i];
-					break;
-				}
+		let index = 0, comp = -1;
 
-				index -= node.children?.[i].count ?? 1;
-			}
+		do {
+			const upper = this.#findIndex(key, node);
 
-			if (comp < 0) {
+			if (upper < 0) {
+				index = -1;
 				break;
 			}
-		}
+
+			if (node.children) {
+				for (let i = 0; i < upper; ++i) {
+					index += node.children[i].count;
+				}
+
+				node = node.children[upper];
+			} else {
+				index += upper;
+				comp = this.#compareKeys(key, node.keys[upper]);
+				break;
+			}
+		} while (true);
 
 		if (isUpperBound && comp) {
 			if (++index >= this.size) {
