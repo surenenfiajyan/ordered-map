@@ -235,6 +235,11 @@ class OrderedMap {
 		return this.#root?.count ?? 0;
 	}
 
+	has(key) {
+		const node = this.#findContainingNode(key, true);
+		return !!node && this.#findIndex(key, node, true) > -1;
+	}
+
 	get(key) {
 		const node = this.#findContainingNode(key, true);
 
@@ -245,11 +250,6 @@ class OrderedMap {
 				return node.values[index];
 			}
 		}
-	}
-
-	has(key) {
-		const node = this.#findContainingNode(key, true);
-		return !!node && this.#findIndex(key, node, true) > -1;
 	}
 
 	getNth(index) {
@@ -307,6 +307,49 @@ class OrderedMap {
 		}
 
 		return index;
+	}
+
+	getClosestKey(key, isUpperBound = false, canMatch = true) {
+		return this.getClosestEntry(key, isUpperBound, canMatch)?.[0];
+	}
+
+	getClosestValue(key, isUpperBound = false, canMatch = true) {
+		return this.getClosestEntry(key, isUpperBound, canMatch)?.[1];
+	}
+
+	getClosestEntry(key, isUpperBound = false, canMatch = true) {
+		let node = this.#findContainingNode(key);
+
+		if (node) {
+			let index = this.#findIndex(key, node);
+			const matches = index > -1 && this.#compareKeys(key, node.keys[index]) === 0;
+
+			if (matches) {
+				if (!canMatch) {
+					if (isUpperBound) {
+						++index;
+					} else {
+						--index;
+					}
+				}
+			} else {
+				if (isUpperBound) {
+					++index;
+				}
+			}
+
+			if (index < 0) {
+				node = node.prev;
+				index = node?.count - 1;
+			} else if (index >= node.count) {
+				node = node.next;
+				index = 0;
+			}
+
+			if (node && index > -1 && index < node.count) {
+				return [node.keys[index], node.values[index]];
+			}
+		}
 	}
 
 	set(key, value) {
@@ -495,7 +538,7 @@ class OrderedMap {
 			while (node) {
 				do {
 					yield node.keys[idx];
-				} while (++idx < node.keys.length);
+				} while (++idx < node.count);
 
 				node = node.next;
 				idx = 0;
@@ -508,7 +551,7 @@ class OrderedMap {
 					}
 
 					yield node.keys[idx];
-				} while (++idx < node.keys.length);
+				} while (++idx < node.count);
 
 				node = node.next;
 				idx = 0;
@@ -524,7 +567,7 @@ class OrderedMap {
 				} while (--idx >= 0);
 
 				node = node.prev;
-				idx = node?.keys.length - 1;
+				idx = node?.count - 1;
 			}
 		}
 	}
@@ -537,7 +580,7 @@ class OrderedMap {
 			while (node) {
 				do {
 					yield node.values[idx];
-				} while (++idx < node.keys.length);
+				} while (++idx < node.count);
 
 				node = node.next;
 				idx = 0;
@@ -550,7 +593,7 @@ class OrderedMap {
 					}
 
 					yield node.values[idx];
-				} while (++idx < node.keys.length);
+				} while (++idx < node.count);
 
 				node = node.next;
 				idx = 0;
@@ -566,7 +609,7 @@ class OrderedMap {
 				} while (--idx >= 0);
 
 				node = node.prev;
-				idx = node?.keys.length - 1;
+				idx = node?.count - 1;
 			}
 		}
 	}
@@ -579,7 +622,7 @@ class OrderedMap {
 			while (node) {
 				do {
 					yield [node.keys[idx], node.values[idx]];
-				} while (++idx < node.keys.length);
+				} while (++idx < node.count);
 
 				node = node.next;
 				idx = 0;
@@ -592,7 +635,7 @@ class OrderedMap {
 					}
 
 					yield [node.keys[idx], node.values[idx]];
-				} while (++idx < node.keys.length);
+				} while (++idx < node.count);
 
 				node = node.next;
 				idx = 0;
@@ -608,7 +651,7 @@ class OrderedMap {
 				} while (--idx >= 0);
 
 				node = node.prev;
-				idx = node?.keys.length - 1;
+				idx = node?.count - 1;
 			}
 		}
 	}
@@ -621,7 +664,7 @@ class OrderedMap {
 			while (node) {
 				do {
 					callbackFn.call(thisArg, node.values[idx], node.keys[idx], this);
-				} while (++idx < node.keys.length);
+				} while (++idx < node.count);
 
 				node = node.next;
 				idx = 0;
@@ -634,7 +677,7 @@ class OrderedMap {
 					}
 
 					callbackFn.call(thisArg, node.values[idx], node.keys[idx], this);
-				} while (++idx < node.keys.length);
+				} while (++idx < node.count);
 
 				node = node.next;
 				idx = 0;
@@ -650,7 +693,7 @@ class OrderedMap {
 				} while (--idx >= 0);
 
 				node = node.prev;
-				idx = node?.keys.length - 1;
+				idx = node?.count - 1;
 			}
 		}
 	}

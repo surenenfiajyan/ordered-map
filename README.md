@@ -27,13 +27,13 @@ It adds additional functionality that keeps the keys ordered.
 	#### Description
 	The number of elements in this map.
 	___
-* ```get(key)```
-	#### Description
-	Searches for a given key. Returns the associated value if present or ```undefined``` if not.
-	___
 * ```has(key)```
 	#### Description
 	Checks if a given key exists in the map. Returns ```true``` if present or ```false``` if not.
+___
+* ```get(key)```
+	#### Description
+	Searches for a given key. Returns the associated value if present or ```undefined``` if not.
 	___
 * ```set(key, value)```
 	#### Description
@@ -63,6 +63,56 @@ It adds additional functionality that keeps the keys ordered.
 	```key``` is the searched key. 
 	
 	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key index is searched, otherwise the greater or equal key index.
+	___
+	```count``` is the maximum number of keys that should be taken, if ommitted all the available keys are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	___
+* ```getClosestKey(key)```
+ 	#### Signatures
+	```
+	getClosestKey(key)
+	getClosestKey(key, isUpperBound)
+	getClosestKey(key, isUpperBound, canMatch)
+	```
+	#### Description
+	Searches for the closest key. Returns the closest key if it exists or ```undefined``` if not.
+
+	```key``` is the key that the closest key is searched for.
+	
+	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key is searched, otherwise the greater or equal closest key.
+
+	```canMatch``` is ```true``` by default. If it's ```false``` only strictly smaller or greater keys are searched.
+	___
+* ```getClosestValue(key)```
+ 	#### Signatures
+	```
+	getClosestValue(key)
+	getClosestValue(key, isUpperBound)
+	getClosestValue(key, isUpperBound, canMatch)
+	```
+	#### Description
+	Searches for the closest key. Returns the associated value if the key exists or ```undefined``` if not.
+
+	```key``` is the key that the closest key is searched for.
+	
+	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key is searched, otherwise the greater or equal closest key.
+
+	```canMatch``` is ```true``` by default. If it's ```false``` only strictly smaller or greater keys are searched.
+	___
+* ```getClosestEntry(key)```
+ 	#### Signatures
+	```
+	getClosestEntry(key)
+	getClosestEntry(key, isUpperBound)
+	getClosestEntry(key, isUpperBound, canMatch)
+	```
+	#### Description
+	Searches for the closest key. Returns the associated entry (```[key, value]``` pair) if the key exists or ```undefined``` if not.
+
+	```key``` is the key that the closest key is searched for.
+	
+	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key is searched, otherwise the greater or equal closest key.
+
+	```canMatch``` is ```true``` by default. If it's ```false``` only strictly smaller or greater keys are searched.
 	___
 * ```delete(key)```
 	#### Description
@@ -167,6 +217,7 @@ It adds additional functionality that keeps the keys ordered.
 | Construction from generic iterable / groupBy() | `n * log(n)`   |
 | Construction from another OrderedMap (with the same comporator) | `n`  |
 | Searching n-th key / value / entry | `log(n)`  |
+| Searching closest key / value / entry | `log(n)`  |
 | Finding the key index | `log(n)`  |
 | Iteration from k-th entry | `count + log(n)`|
 
