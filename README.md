@@ -209,17 +209,17 @@ ___
 	```comparatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
 
 ## Algorithmic complexity (worst case)
-|                            Operation                            |    Complexity    |   |
-|:---------------------------------------------------------------:|:----------------:|---|
-|                             Search                              |     `log(n)`     |   |
-|                            Insertion                            |     `log(n)`     |   |
-|                            Deletion                             |     `log(n)`     |   |
-|         Construction from generic iterable / groupBy()          |   `n * log(n)`   |   |
-| Construction from another OrderedMap (with the same comparator) |       `n`        |   |
-|               Searching n-th key / value / entry                |     `log(n)`     |   |
-|              Searching closest key / value / entry              |     `log(n)`     |   |
-|                      Finding the key index                      |     `log(n)`     |   |
-|                    Iteration from k-th entry                    | `count + log(n)` |   |
+|                            Operation                            |    Complexity    |
+|:---------------------------------------------------------------:|:----------------:|
+|                             Search                              |     `log(n)`     |
+|                            Insertion                            |     `log(n)`     |
+|                            Deletion                             |     `log(n)`     |
+|         Construction from generic iterable / groupBy()          |   `n * log(n)`   |
+| Construction from another OrderedMap (with the same comparator) |       `n`        |
+|               Searching n-th key / value / entry                |     `log(n)`     |
+|              Searching closest key / value / entry              |     `log(n)`     |
+|                      Finding the key index                      |     `log(n)`     |
+|                    Iteration from k-th entry                    | `count + log(n)` |
 
 ## License
 [MIT license](https://github.com/surenenfiajyan/ordered-map/blob/main/LICENSE)
