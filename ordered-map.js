@@ -3,9 +3,9 @@ class OrderedMap {
 	static #maxChildren = 64;
 
 	#root = null;
-	#compareKeys = OrderedMap.#comporator;
+	#compareKeys = OrderedMap.#comparator;
 
-	static #comporator = (k1, k2) => {
+	static #comparator = (k1, k2) => {
 		function getType(val) {
 			return val === null ? 'null' : typeof val;
 		}
@@ -31,7 +31,7 @@ class OrderedMap {
 					return typeDiff2;
 				}
 
-				return this.#comporator(v1, v2);
+				return this.#comparator(v1, v2);
 			case 'number':
 				const nan1 = isNaN(k1), nan2 = isNaN(k2);
 				const nanDiff = nan2 - nan1;
@@ -171,12 +171,10 @@ class OrderedMap {
 
 			layerFirstParent = layerFirstParent.children[0];
 		}
-
-		return;
 	}
 
-	static groupBy(iterable, callbackFn, comporatorFn = null) {
-		const map = new OrderedMap(comporatorFn);
+	static groupBy(iterable, callbackFn, comparatorFn = null) {
+		const map = new OrderedMap(comparatorFn);
 
 		let index = 0;
 
