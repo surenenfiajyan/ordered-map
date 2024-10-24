@@ -14,14 +14,14 @@ It adds additional functionality that keeps the keys ordered.
 	```
 	constructor()
 	constructor(iterable)
-	constructor(comporatorFn)
-	constructor(iterable, comporatorFn)
+	constructor(comparatorFn)
+	constructor(iterable, comparatorFn)
 	```
 	```iterable``` is an Array or other iterable object whose elements are key-value pairs. (For example, arrays with two elements, such as ```[[ 1, 'one' ],[ 2, 'two' ]]```).
 
-	```comporatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
+	```comparatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
 	
-	If the only argument is a function (```typeof arg === 'function'```) it will be recognized as comporator, otherwise as an iterator.
+	If the only argument is a function (```typeof arg === 'function'```) it will be recognized as comparator, otherwise as an iterator.
 	___
 * ```size```
 	#### Description
@@ -192,7 +192,7 @@ ___
 	#### Signatures
 	```
 	groupBy(iterable, callbackFn)
-	groupBy(iterable, callbackFn, comporatorFn)
+	groupBy(iterable, callbackFn, comparatorFn)
 	```
 	#### Description
 	Groups the elements of a given iterable using the values returned by a provided callback function. The final returned OrderedMap uses the unique values from the test function as keys, which can be used to get the array of elements in each group.
@@ -206,7 +206,7 @@ ___
 
 	```index``` is the index of the current element being processed.
 
-	```comporatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
+	```comparatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
 
 ## Algorithmic complexity (worst case)
 | Operation | Complexity|
@@ -215,7 +215,7 @@ ___
 | Insertion | `log(n)`   |
 | Deletion | `log(n)`   |
 | Construction from generic iterable / groupBy() | `n * log(n)`   |
-| Construction from another OrderedMap (with the same comporator) | `n`  |
+| Construction from another OrderedMap (with the same comparator) | `n`  |
 | Searching n-th key / value / entry | `log(n)`  |
 | Searching closest key / value / entry | `log(n)`  |
 | Finding the key index | `log(n)`  |
