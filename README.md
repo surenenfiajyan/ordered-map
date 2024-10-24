@@ -1,8 +1,8 @@
 # OrderedMap
 ## Description
-An implementation of an orderd map in JS.
+An implementation of an ordered map in JS.
 ## How to use
-Modern JS supports [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object, which is useful in a lot of cases as a fast associative key - value storage. However it doesn't support ordering by keys. OrderedMap adds this functionality, it supports all the methods that a normal Map has and is compatible with it, with the only limitation that the iteration is not guaranteed to be correct when the map is modified during iteration (this is a performance and memory usage tradeoff, I might work on this in the future).
+Modern JS supports [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object, which is useful in a lot of cases as a fast associative key - value storage. However, it doesn't support ordering by keys. OrderedMap adds this functionality, it supports all the methods that a normal Map has and is compatible with it, with the only limitation that the iteration is not guaranteed to be correct when the map is modified during iteration (this is a performance and memory usage tradeoff, I might work on this in the future).
 
 It adds additional functionality that keeps the keys ordered.
 
@@ -58,13 +58,13 @@ ___
 	getIndex(key, isUpperBound)
 	```
 	#### Description
-	Returns the index of the closest less or equal key or the greater or equal key. If no such key is found ```-1``` is retuned.
+	Returns the index of the closest less or equal key or the greater or equal key. If no such key is found ```-1``` is returned.
 	
 	```key``` is the searched key. 
 	
 	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key index is searched, otherwise the greater or equal key index.
 	___
-	```count``` is the maximum number of keys that should be taken, if ommitted all the available keys are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of keys that should be taken, if omitted all the available keys are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 * ```getClosestKey(key)```
  	#### Signatures
@@ -134,7 +134,7 @@ ___
 	
 	```startIndex``` is the first key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of keys that should be taken, if ommitted all the available keys are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of keys that should be taken, if omitted all the available keys are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 * ```values()```
  	#### Signatures
@@ -148,7 +148,7 @@ ___
 	
 	```startIndex``` is the first value associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of values that should be taken, if ommitted all the available values are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of values that should be taken, if omitted all the available values are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 * ```entries()```
  	#### Signatures
@@ -162,7 +162,7 @@ ___
 	
 	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of entries that should be taken, if ommitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of entries that should be taken, if omitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 * ```forEach(callbackFn)```
  	#### Signatures
@@ -175,7 +175,7 @@ ___
 	#### Description
 	Executes a provided function once per each key/value pair in this map.
 
-	```callbackFn(value, key, map)``` is afunction to execute for each entry in the map. 
+	```callbackFn(value, key, map)``` is a function to execute for each entry in the map. 
 	
 	```value``` is the value of each iteration.
 
@@ -185,7 +185,7 @@ ___
 
 	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of entries that should be taken, if ommitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of entries that should be taken, if omitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
 ### Static Methods / properties
 * ```groupBy()```
@@ -209,17 +209,17 @@ ___
 	```comparatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
 
 ## Algorithmic complexity (worst case)
-| Operation | Complexity|
-| :---:   | :---: |
-| Search | `log(n)`   |
-| Insertion | `log(n)`   |
-| Deletion | `log(n)`   |
-| Construction from generic iterable / groupBy() | `n * log(n)`   |
-| Construction from another OrderedMap (with the same comparator) | `n`  |
-| Searching n-th key / value / entry | `log(n)`  |
-| Searching closest key / value / entry | `log(n)`  |
-| Finding the key index | `log(n)`  |
-| Iteration from k-th entry | `count + log(n)`|
+|                            Operation                            |    Complexity    |   |
+|:---------------------------------------------------------------:|:----------------:|---|
+|                             Search                              |     `log(n)`     |   |
+|                            Insertion                            |     `log(n)`     |   |
+|                            Deletion                             |     `log(n)`     |   |
+|         Construction from generic iterable / groupBy()          |   `n * log(n)`   |   |
+| Construction from another OrderedMap (with the same comparator) |       `n`        |   |
+|               Searching n-th key / value / entry                |     `log(n)`     |   |
+|              Searching closest key / value / entry              |     `log(n)`     |   |
+|                      Finding the key index                      |     `log(n)`     |   |
+|                    Iteration from k-th entry                    | `count + log(n)` |   |
 
 ## License
 [MIT license](https://github.com/surenenfiajyan/ordered-map/blob/main/LICENSE)
