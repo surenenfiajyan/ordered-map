@@ -1,4 +1,4 @@
-class OrderedMap {
+export default class OrderedMap {
 	static #minChildren = 32;
 	static #maxChildren = 64;
 
