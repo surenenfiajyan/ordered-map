@@ -187,7 +187,7 @@ ___
 	
 	```count``` is the maximum number of entries that should be taken, if omitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
 	___
-### Static Methods / properties
+### Static methods / properties
 * ```groupBy()```
 	#### Signatures
 	```
