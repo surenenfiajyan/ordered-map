@@ -1,5 +1,6 @@
 export default class OrderedMap {
-	static #minChildren = 32;
+	static #minChildren = 24;
+	static #splitChildren = 32;
 	static #maxChildren = 64;
 
 	#root = null;
@@ -126,6 +127,94 @@ export default class OrderedMap {
 		return [node, index];
 	}
 
+	#internalGetOrInsert(key, value, caller) {
+		let child = this.#findContainingNode(key);
+		let returnValue = this;
+
+		if (!child) {
+			child = this.#root = {
+				parent: null,
+				prev: null,
+				next: null,
+				count: 0,
+				keys: [],
+				values: [],
+				children: null,
+			};
+		}
+
+		let index = this.#findIndex(key, child);
+
+		if (index > -1 && this.#compareKeys(key, child.keys[index]) === 0) {
+			if (caller === this.set) {
+				child.values[index] = value;
+			} else {
+				returnValue = child.values[index];
+			}
+		} else {
+			if (caller === this.getOrInsert) {
+				returnValue = value;
+			} else if (caller === this.getOrInsertComputed) {
+				returnValue = value = value();
+			}
+
+			child.keys.splice(index + 1, 0, key);
+			child.values.splice(index + 1, 0, value);
+
+			do {
+				let parent = child.parent;
+
+				if (parent) {
+					index = parent.children.indexOf(child);
+					parent.keys[index] = child.keys[0];
+				}
+
+				if (child.keys.length > OrderedMap.#maxChildren) {
+					if (!parent) {
+						child.parent = parent = this.#root = {
+							parent: null,
+							prev: null,
+							next: null,
+							count: child.count,
+							keys: [child.keys[0]],
+							values: null,
+							children: [child],
+						};
+
+						index = 0;
+					}
+
+					const values = child.values?.splice(OrderedMap.#splitChildren, OrderedMap.#maxChildren) ?? null;
+					const children = child.children?.splice(OrderedMap.#splitChildren, OrderedMap.#maxChildren) ?? null;
+
+					const nextChild = child.next = {
+						parent,
+						prev: child,
+						next: child.next,
+						count: values?.length ?? children.reduce((acc, cur) => acc + cur.count, 0),
+						keys: child.keys.splice(OrderedMap.#splitChildren, OrderedMap.#maxChildren),
+						values,
+						children,
+					};
+
+					if (nextChild.next) {
+						nextChild.next.prev = nextChild;
+					}
+
+					nextChild.children?.forEach(x => x.parent = nextChild);
+					child.count -= nextChild.count;
+					parent.keys.splice(index + 1, 0, nextChild.keys[0]);
+					parent.children.splice(index + 1, 0, nextChild);
+				}
+
+				++child.count;
+				child = parent;
+			} while (child);
+		}
+
+		return returnValue;
+	}
+
 	#deepCopy(otherRoot) {
 		this.#root = {
 			parent: null,
@@ -250,6 +339,14 @@ export default class OrderedMap {
 		}
 	}
 
+	getOrInsert(key, defaultValue) {
+		return this.#internalGetOrInsert(key, defaultValue, this.getOrInsert);
+	}
+
+	getOrInsertComputed(key, defaultCreator) {
+		return this.#internalGetOrInsert(key, defaultCreator, this.getOrInsertComputed);
+	}
+
 	getNth(index) {
 		const [node, idx] = this.#findContainingNodeByStartingIndex(index);
 		return node?.values[idx];
@@ -351,80 +448,7 @@ export default class OrderedMap {
 	}
 
 	set(key, value) {
-		let child = this.#findContainingNode(key);
-
-		if (!child) {
-			child = this.#root = {
-				parent: null,
-				prev: null,
-				next: null,
-				count: 0,
-				keys: [],
-				values: [],
-				children: null,
-			};
-		}
-
-		let index = this.#findIndex(key, child);
-
-		if (index > -1 && this.#compareKeys(key, child.keys[index]) === 0) {
-			child.values[index] = value;
-		} else {
-			child.keys.splice(index + 1, 0, key);
-			child.values.splice(index + 1, 0, value);
-
-			do {
-				let parent = child.parent;
-
-				if (parent) {
-					index = parent.children.indexOf(child);
-					parent.keys[index] = child.keys[0];
-				}
-
-				if (child.keys.length > OrderedMap.#maxChildren) {
-					if (!parent) {
-						child.parent = parent = this.#root = {
-							parent: null,
-							prev: null,
-							next: null,
-							count: child.count,
-							keys: [child.keys[0]],
-							values: null,
-							children: [child],
-						};
-
-						index = 0;
-					}
-
-					const values = child.values?.splice(OrderedMap.#minChildren, OrderedMap.#maxChildren) ?? null;
-					const children = child.children?.splice(OrderedMap.#minChildren, OrderedMap.#maxChildren) ?? null;
-
-					const nextChild = child.next = {
-						parent,
-						prev: child,
-						next: child.next,
-						count: values?.length ?? children.reduce((acc, cur) => acc + cur.count, 0),
-						keys: child.keys.splice(OrderedMap.#minChildren, OrderedMap.#maxChildren),
-						values,
-						children,
-					};
-
-					if (nextChild.next) {
-						nextChild.next.prev = nextChild;
-					}
-
-					nextChild.children?.forEach(x => x.parent = nextChild);
-					child.count -= nextChild.count;
-					parent.keys.splice(index + 1, 0, nextChild.keys[0]);
-					parent.children.splice(index + 1, 0, nextChild);
-				}
-
-				++child.count;
-				child = parent;
-			} while (child);
-		}
-
-		return this;
+		return this.#internalGetOrInsert(key, value, this.set);
 	}
 
 	delete(key) {

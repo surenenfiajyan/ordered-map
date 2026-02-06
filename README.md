@@ -51,6 +51,16 @@ ___
 	#### Description
 	Searches for a ```[key, value]``` pair with an ordering index. Returns the pair if present or ```undefined``` if not. If ```index``` is negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
 	___
+* ```getOrInsert(key, defaultValue)```
+	#### Description
+	Searches for a given key. Returns the associated value if present. If the key isn't found, the key will be associated with ```defaultValue```, and the return value will be ```defaultValue```.
+	___
+* ```getOrInsertComputed(key, defaultCreator)```
+	#### Description
+	Searches for a given key. Returns the associated value if present. If the key isn't found, the key will be associated with the returned value of callback ```defaultValue```, and the return value will be that associated value.
+
+	This is useful when the default value construction is expensive, otherwise use ```getOrInsert```.
+	___
 * ```getIndex(key)```
  	#### Signatures
 	```
