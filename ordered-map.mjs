@@ -344,6 +344,10 @@ export default class OrderedMap {
 	}
 
 	getOrInsertComputed(key, defaultCreator) {
+		if (typeof defaultCreator !== 'function') {
+			throw new TypeError('The default creator is not a function');
+		}
+
 		return this.#internalGetOrInsert(key, defaultCreator, this.getOrInsertComputed);
 	}
 
