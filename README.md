@@ -21,7 +21,7 @@ It adds additional functionality that keeps the keys ordered.
 
 	```comparatorFn``` is a custom function that determines the order of the elements, it works exactly like the passed callback in [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). 
 	
-	If the only argument is a function (```typeof arg === 'function'```) it will be recognized as comparator, otherwise as an iterator.
+	If the only argument is a function (```typeof arg === 'function'```), it will be recognized as comparator, otherwise, as an iterator.
 	___
 * ```size```
 	#### Description
@@ -41,15 +41,15 @@ ___
 	___
 * ```getNth(index)```
 	#### Description
-	Searches for a value with its key ordering index. Returns the value if present or ```undefined``` if not. If ```index``` is negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
+	Searches for a value with its key ordering index. Returns the value if present or ```undefined``` if not. If ```index``` is negative, the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
 	___
 * ```getNthKey(index)```
 	#### Description
-	Searches for a key with an ordering index. Returns the key if present or ```undefined``` if not. If ```index``` is negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
+	Searches for a key with an ordering index. Returns the key if present or ```undefined``` if not. If ```index``` is negative, the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
 	___
 * ```getNthEntry(index)```
 	#### Description
-	Searches for a ```[key, value]``` pair with an ordering index. Returns the pair if present or ```undefined``` if not. If ```index``` is negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
+	Searches for a ```[key, value]``` pair with an ordering index. Returns the pair if present or ```undefined``` if not. If ```index``` is negative, the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.).
 	___
 * ```getOrInsert(key, defaultValue)```
 	#### Description
@@ -66,15 +66,18 @@ ___
 	```
 	getIndex(key)
 	getIndex(key, isUpperBound)
+	getIndex(key, isUpperBound, shouldMatch)
 	```
 	#### Description
-	Returns the index of the closest less or equal key or the greater or equal key. If no such key is found ```-1``` is returned.
+	Returns the index of the closest less or equal key or the greater or equal key. If no such key is found, ```-1``` is returned.
 	
 	```key``` is the searched key. 
 	
-	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key index is searched, otherwise the greater or equal key index.
+	```isUpperBound``` is ```false``` by default. If it is ```false```, the closest less or equal key index is searched, otherwise the greater or equal key index.
+
+	```shouldMatch``` is ```false``` by default. If it is ```true```, only strictly equal key is searched.
 	___
-	```count``` is the maximum number of keys that should be taken, if omitted all the available keys are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of keys that should be taken, if omitted all the available keys are taken. If ```count``` is negative, the iteration order is reversed from the starting index.
 	___
 * ```getClosestKey(key)```
  	#### Signatures
@@ -88,9 +91,9 @@ ___
 
 	```key``` is the key that the closest key is searched for.
 	
-	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key is searched, otherwise the greater or equal closest key.
+	```isUpperBound``` is ```false``` by default. If it is ```false```, the closest less or equal key is searched, otherwise the greater or equal closest key.
 
-	```canMatch``` is ```true``` by default. If it's ```false``` only strictly smaller or greater keys are searched.
+	```canMatch``` is ```true``` by default. If it's ```false```, only strictly smaller or greater keys are searched.
 	___
 * ```getClosestValue(key)```
  	#### Signatures
@@ -104,9 +107,9 @@ ___
 
 	```key``` is the key that the closest key is searched for.
 	
-	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key is searched, otherwise the greater or equal closest key.
+	```isUpperBound``` is ```false``` by default. If it is ```false```, the closest less or equal key is searched, otherwise the greater or equal closest key.
 
-	```canMatch``` is ```true``` by default. If it's ```false``` only strictly smaller or greater keys are searched.
+	```canMatch``` is ```true``` by default. If it's ```false```, only strictly smaller or greater keys are searched.
 	___
 * ```getClosestEntry(key)```
  	#### Signatures
@@ -120,9 +123,9 @@ ___
 
 	```key``` is the key that the closest key is searched for.
 	
-	```isUpperBound``` is ```false``` by default. If it is ```false``` the closest less or equal key is searched, otherwise the greater or equal closest key.
+	```isUpperBound``` is ```false``` by default. If it is ```false```, the closest less or equal key is searched, otherwise the greater or equal closest key.
 
-	```canMatch``` is ```true``` by default. If it's ```false``` only strictly smaller or greater keys are searched.
+	```canMatch``` is ```true``` by default. If it's ```false```, only strictly smaller or greater keys are searched.
 	___
 * ```delete(key)```
 	#### Description
@@ -142,9 +145,9 @@ ___
 	#### Description
 	Returns an iterator for the keys.
 	
-	```startIndex``` is the first key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
+	```startIndex``` is the first key order index that the iteration should start from, by default it's ```0```. If it's negative, the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note, that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of keys that should be taken, if omitted all the available keys are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of keys that should be taken, if omitted, all the available keys are taken. If ```count``` is negative, the iteration order is reversed from the starting index.
 	___
 * ```values()```
  	#### Signatures
@@ -156,9 +159,9 @@ ___
 	#### Description
 	Returns an iterator for the values.
 	
-	```startIndex``` is the first value associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
+	```startIndex``` is the first value associated key order index that the iteration should start from, by default it's ```0```. If it's negative, the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of values that should be taken, if omitted all the available values are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of values that should be taken, if omitted, all the available values are taken. If ```count``` is negative, the iteration order is reversed from the starting index.
 	___
 * ```entries()```
  	#### Signatures
@@ -170,9 +173,9 @@ ___
 	#### Description
 	Returns an iterator for the entries (```[key, value]``` pairs). 
 	
-	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
+	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative, the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of entries that should be taken, if omitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of entries that should be taken, if omitted, all the available entries are taken. If ```count``` is negative, the iteration order is reversed from the starting index.
 	___
 * ```forEach(callbackFn)```
  	#### Signatures
@@ -193,9 +196,9 @@ ___
 
 	```map``` is the map being iterated.
 
-	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
+	```startIndex``` is the first entry associated key order index that the iteration should start from, by default it's ```0```. If it's negative, the n-th from the end is taken (i.e. -1 means the last, -2 means the second last, etc.). Note that this still doesn't reverse the iteration order.
 	
-	```count``` is the maximum number of entries that should be taken, if omitted all the available entries are taken. If ```count``` is negative the iteration order is reversed from the starting index.
+	```count``` is the maximum number of entries that should be taken, if omitted, all the available entries are taken. If ```count``` is negative, the iteration order is reversed from the starting index.
 	___
 ### Static methods / properties
 * ```groupBy()```
