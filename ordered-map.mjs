@@ -341,9 +341,6 @@ export default class OrderedMap {
 	/**
 	 * Creates a new OrderedMap instance.
 	 * 
-	 * @template K The type of keys
-	 * @template V The type of values
-	 * 
 	 * @overload
 	 * @param {Iterable<[K, V]>} [iterable] An iterable of [key, value] pairs to populate the map
 	 * 
@@ -435,7 +432,6 @@ export default class OrderedMap {
 	/**
 	 * Checks whether a key exists in the map.
 	 * 
-	 * @template K
 	 * @param {K} key The key to check
 	 * @returns {boolean} `true` if the key exists, `false` otherwise
 	 * 
@@ -452,7 +448,6 @@ export default class OrderedMap {
 	/**
 	 * Gets the value associated with a key.
 	 * 
-	 * @template K, V
 	 * @param {K} key The key to look up
 	 * @returns {V | undefined} The value associated with the key, or `undefined` if not found
 	 * 
@@ -476,7 +471,6 @@ export default class OrderedMap {
 	/**
 	 * Gets the value for a key, or inserts a default value if the key doesn't exist.
 	 * 
-	 * @template K, V
 	 * @param {K} key The key to look up or insert
 	 * @param {V} defaultValue The value to insert if the key doesn't exist
 	 * @returns {V} The existing value, or the inserted default value
@@ -496,7 +490,6 @@ export default class OrderedMap {
 	 * The default creator function is only called if the key doesn't exist, making this
 	 * efficient for expensive computations.
 	 * 
-	 * @template K, V
 	 * @param {K} key The key to look up or insert
 	 * @param {() => V} defaultCreator A function that computes the value to insert
 	 * @returns {V} The existing value, or the computed and inserted value
@@ -520,7 +513,6 @@ export default class OrderedMap {
 	 * 
 	 * Supports negative indices for counting from the end.
 	 * 
-	 * @template K, V
 	 * @param {number} index The zero-based index, or negative to count from the end
 	 * @returns {V | undefined} The value at that index, or `undefined` if out of bounds
 	 * 
@@ -540,7 +532,6 @@ export default class OrderedMap {
 	 * 
 	 * Supports negative indices for counting from the end.
 	 * 
-	 * @template K
 	 * @param {number} index The zero-based index, or negative to count from the end
 	 * @returns {K | undefined} The key at that index, or `undefined` if out of bounds
 	 * 
@@ -559,7 +550,6 @@ export default class OrderedMap {
 	 * 
 	 * Supports negative indices for counting from the end.
 	 * 
-	 * @template K, V
 	 * @param {number} index The zero-based index, or negative to count from the end
 	 * @returns {[K, V] | undefined} A [key, value] tuple at that index, or `undefined` if out of bounds
 	 * 
@@ -579,7 +569,6 @@ export default class OrderedMap {
 	/**
 	 * Gets the index of a key or the position where a key would be inserted.
 	 * 
-	 * @template K
 	 * @param {K} key The key to find
 	 * @param {boolean} [isUpperBound=false] If `true`, finds the upper bound (position after all equal keys).
 	 *        If `false`, finds the lower bound (position of the first equal key).
@@ -642,7 +631,6 @@ export default class OrderedMap {
 	 * "Closest" means the key with the highest comparison result <= the given key (lower bound)
 	 * or the lowest comparison result >= the given key (upper bound).
 	 * 
-	 * @template K
 	 * @param {K} key The reference key
 	 * @param {boolean} [isUpperBound=false] If `true`, finds the upper bound (next key).
 	 *        If `false`, finds the lower bound (previous or equal key).
@@ -664,7 +652,6 @@ export default class OrderedMap {
 	/**
 	 * Finds the value of the closest entry to the given key.
 	 * 
-	 * @template K, V
 	 * @param {K} key The reference key
 	 * @param {boolean} [isUpperBound=false] If `true`, finds the upper bound (next entry).
 	 *        If `false`, finds the lower bound (previous or equal entry).
@@ -690,7 +677,6 @@ export default class OrderedMap {
 	 * - Lower bound (default): The entry with the largest key <= the query key
 	 * - Upper bound: The entry with the smallest key >= the query key
 	 * 
-	 * @template K, V
 	 * @param {K} key The reference key
 	 * @param {boolean} [isUpperBound=false] If `true`, finds the upper bound (next entry).
 	 *        If `false`, finds the lower bound (previous or equal entry).
@@ -751,7 +737,6 @@ export default class OrderedMap {
 	 * 
 	 * If the key already exists, updates its value. If not, inserts the key in sorted order.
 	 * 
-	 * @template K, V
 	 * @param {K} key The key to set
 	 * @param {V} value The value to associate with the key
 	 * @returns {OrderedMap<K, V>} This map (for chaining)
@@ -771,7 +756,6 @@ export default class OrderedMap {
 	/**
 	 * Deletes a key and its associated value from the map.
 	 * 
-	 * @template K
 	 * @param {K} key The key to delete
 	 * @returns {boolean} `true` if the key existed and was deleted, `false` otherwise
 	 * 
@@ -892,7 +876,7 @@ export default class OrderedMap {
 	 * 
 	 * This makes OrderedMap iterable with for...of loops and spread operators.
 	 * 
-	 * @returns {Iterator<[K, V]>} An iterator for [key, value] pairs
+	 * @returns {IterableIterator<[K, V]>} An iterator for [key, value] pairs
 	 * 
 	 * @example
 	 * const map = new OrderedMap([['b', 2], ['a', 1]]);
@@ -907,11 +891,10 @@ export default class OrderedMap {
 	/**
 	 * Returns an iterator that yields keys in sorted order.
 	 * 
-	 * @template K
 	 * @param {number} [startIndex=0] Starting index (supports negative indices)
 	 * @param {number | null} [count=null] Number of keys to yield. Null means all remaining.
 	 *        Negative numbers count backwards from startIndex.
-	 * @returns {Iterator<K>} An iterator for keys
+	 * @returns {IterableIterator<K>} An iterator for keys
 	 * 
 	 * @example
 	 * const map = new OrderedMap([['a', 1], ['b', 2], ['c', 3]]);
@@ -976,11 +959,10 @@ export default class OrderedMap {
 	/**
 	 * Returns an iterator that yields values in sorted order (by key).
 	 * 
-	 * @template V
 	 * @param {number} [startIndex=0] Starting index (supports negative indices)
 	 * @param {number | null} [count=null] Number of values to yield. Null means all remaining.
 	 *        Negative numbers count backwards from startIndex.
-	 * @returns {Iterator<V>} An iterator for values
+	 * @returns {IterableIterator<V>} An iterator for values
 	 * 
 	 * @example
 	 * const map = new OrderedMap([['a', 1], ['b', 2], ['c', 3]]);
@@ -1040,11 +1022,10 @@ export default class OrderedMap {
 	/**
 	 * Returns an iterator that yields [key, value] pairs in sorted order.
 	 * 
-	 * @template K, V
 	 * @param {number} [startIndex=0] Starting index (supports negative indices)
 	 * @param {number | null} [count=null] Number of entries to yield. Null means all remaining.
 	 *        Negative numbers count backwards from startIndex.
-	 * @returns {Iterator<[K, V]>} An iterator for [key, value] pairs
+	 * @returns {IterableIterator<[K, V]>} An iterator for [key, value] pairs
 	 * 
 	 * @example
 	 * const map = new OrderedMap([['a', 1], ['b', 2], ['c', 3]]);
@@ -1111,7 +1092,6 @@ export default class OrderedMap {
 	 * 
 	 * Similar to `Array.prototype.forEach`, but iterates entries in sorted key order.
 	 * 
-	 * @template K, V
 	 * @param {(value: V, key: K, map: OrderedMap<K, V>) => void} callbackFn Function to call for each entry.
 	 *        Called with (value, key, map) - note the order differs from Array.forEach which uses (element, index, array).
 	 * @param {*} [thisArg] Value to use as `this` when executing callbackFn
