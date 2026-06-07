@@ -83,8 +83,6 @@ ___
 
 	```shouldMatch``` is ```false``` by default. If it is ```true```, only strictly equal key is searched.
 	___
-	```count``` is the maximum number of keys that should be taken, if omitted all the available keys are taken. If ```count``` is negative, the iteration order is reversed from the starting index.
-	___
 * ```getClosestKey(key)```
  	#### Signatures
 	```

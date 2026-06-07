@@ -642,22 +642,24 @@ export default class OrderedMap {
 	/**
 	 * Finds the key of the closest entry to the given key.
 	 * 
-	 * "Closest" means the key with the highest comparison result <= the given key (lower bound)
-	 * or the lowest comparison result >= the given key (upper bound).
+	 * "Closest" means:
+	 * - Lower bound: the greatest key less than or equal to `key`
+	 * - Upper bound: the smallest key greater than or equal to `key`
 	 * 
 	 * @param {K} key The reference key
-	 * @param {boolean} [isUpperBound=false] If `true`, finds the upper bound (next key).
-	 *        If `false`, finds the lower bound (previous or equal key).
-	 * @param {boolean} [canMatch=true] If `true`, the exact key is a valid result.
-	 *        If `false`, skips over the exact key.
+	 * @param {boolean} [isUpperBound=false] If `true`, searches for the closest greater-or-equal key.
+	 *        If `false`, searches for the closest less-or-equal key.
+	 * @param {boolean} [canMatch=true] If `true`, an exact match is allowed.
+	 *        If `false`, searches only for a strictly smaller or strictly greater key.
 	 * @returns {K | undefined} The closest key, or `undefined` if no such key exists
 	 * 
 	 * @example
 	 * const map = new OrderedMap([['a', 1], ['c', 3], ['e', 5]]);
-	 * console.log(map.getClosestKey('d'));             // 'c' (lower bound)
-	 * console.log(map.getClosestKey('d', true));       // 'e' (upper bound)
-	 * console.log(map.getClosestKey('c', false, true)); // 'c' (exact match)
-	 * console.log(map.getClosestKey('c', false, false)); // 'a' (skip exact)
+	 * 
+	 * console.log(map.getClosestKey('d'));              // 'c', closest less-or-equal key
+	 * console.log(map.getClosestKey('d', true));        // 'e', closest greater-or-equal key
+	 * console.log(map.getClosestKey('c', false, true)); // 'c', exact match
+	 * console.log(map.getClosestKey('c', false, false)); // 'a', strictly smaller key
 	 */
 	getClosestKey(key, isUpperBound = false, canMatch = true) {
 		return this.getClosestEntry(key, isUpperBound, canMatch)?.[0];
@@ -666,19 +668,26 @@ export default class OrderedMap {
 	/**
 	 * Finds the value of the closest entry to the given key.
 	 * 
+	 * "Closest" means:
+	 * - Lower bound: the value associated with the greatest key less than or equal to `key`
+	 * - Upper bound: the value associated with the smallest key greater than or equal to `key`
+	 * 
 	 * @param {K} key The reference key
-	 * @param {boolean} [isUpperBound=false] If `true`, finds the upper bound (next entry).
-	 *        If `false`, finds the lower bound (previous or equal entry).
-	 * @param {boolean} [canMatch=true] If `true`, the exact key is a valid result.
-	 *        If `false`, skips over the exact key.
+	 * @param {boolean} [isUpperBound=false] If `true`, searches for the value of the closest greater-or-equal entry.
+	 *        If `false`, searches for the value of the closest less-or-equal entry.
+	 * @param {boolean} [canMatch=true] If `true`, an exact match is allowed.
+	 *        If `false`, searches only for a strictly smaller or strictly greater key.
 	 * @returns {V | undefined} The value of the closest entry, or `undefined` if no such entry exists
 	 * 
-	 * @see {@link getClosestKey} for closer explanation of closest matching
+	 * @see {@link getClosestKey} for key-only closest lookup
 	 * 
 	 * @example
 	 * const map = new OrderedMap([['a', 1], ['c', 3], ['e', 5]]);
-	 * console.log(map.getClosestValue('d'));      // 3
-	 * console.log(map.getClosestValue('d', true)); // 5
+	 * 
+	 * console.log(map.getClosestValue('d'));              // 3, value for key 'c'
+	 * console.log(map.getClosestValue('d', true));        // 5, value for key 'e'
+	 * console.log(map.getClosestValue('c', false, true)); // 3, exact match
+	 * console.log(map.getClosestValue('c', true, false)); // 5, strictly greater key
 	 */
 	getClosestValue(key, isUpperBound = false, canMatch = true) {
 		return this.getClosestEntry(key, isUpperBound, canMatch)?.[1];
