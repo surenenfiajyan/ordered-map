@@ -38,41 +38,42 @@ export default class OrderedMap {
 	#compareKeys = OrderedMap.#comparator;
 
 	static #comparator = (k1, k2) => {
-		function getType(val) {
-			return val === null ? 'null' : typeof val;
-		}
+		const getType = (val) => val === null ? 'null' : typeof val;
 
 		const t1 = getType(k1), t2 = getType(k2);
-		const typeDiff = t1.localeCompare(t2)
 
-		if (typeDiff) {
-			return typeDiff;
-		}
+		if (t1 === t2) {
+			switch (t1) {
+				case 'number':
+					const nan1 = isNaN(k1), nan2 = isNaN(k2);
+					const nanDiff = nan2 - nan1;
 
-		switch (t1) {
-			case 'object':
-			case 'symbol':
-			case 'function':
-				const v1 = k1.valueOf();
-				const v2 = k2.valueOf();
-				const tv1 = getType(v1);
-				const tv2 = getType(v2);
-				const typeDiff2 = tv1.localeCompare(tv2);
+					if (nanDiff || nan1) {
+						return nanDiff;
+					}
 
-				if (typeDiff2 || tv1 === 'object') {
-					return typeDiff2;
-				}
+					break;
+				case 'symbol':
+				case 'undefined':
+				case 'null':
+					return 0;
+				case 'object':
+				case 'function':
+					const v1 = typeof k1.valueOf === 'function' ? k1.valueOf() : undefined;
+					const v2 = typeof k2.valueOf === 'function' ? k2.valueOf() : undefined;
+					const tv1 = getType(v1);
+					const tv2 = getType(v2);
+					const typeDiff2 = (tv1 < tv2) ? -1 : (tv1 > tv2 ? 1 : 0);
 
-				return this.#comparator(v1, v2);
-			case 'number':
-				const nan1 = isNaN(k1), nan2 = isNaN(k2);
-				const nanDiff = nan2 - nan1;
+					if (typeDiff2 || tv1 === 'function' || tv1 === 'object' || tv1 === 'symbol') {
+						return typeDiff2;
+					}
 
-				if (nanDiff || nan1) {
-					return nanDiff;
-				}
-
-				break;
+					return this.#comparator(v1, v2);
+			}
+		} else {
+			k1 = t1;
+			k2 = t2;
 		}
 
 		if (k1 < k2) {
@@ -374,7 +375,7 @@ export default class OrderedMap {
 	 * 
 	 * @example
 	 * // From iterable with custom comparator
-	 * const map4 = new OrderedMap([['b', 2], ['a', 1]], (a, b) => a - b);
+	 * const map4 = new OrderedMap([[2, 'b'], [1, 'a']], (a, b) => a - b);
 	 * 
 	 * @example
 	 * // Clone another OrderedMap
@@ -567,20 +568,25 @@ export default class OrderedMap {
 	}
 
 	/**
-	 * Gets the index of a key or the position where a key would be inserted.
+	 * Gets the index of the closest key relative to the given key.
 	 * 
-	 * @param {K} key The key to find
-	 * @param {boolean} [isUpperBound=false] If `true`, finds the upper bound (position after all equal keys).
-	 *        If `false`, finds the lower bound (position of the first equal key).
-	 * @param {boolean} [shouldMatch=false] If `true`, returns -1 when key is not found.
-	 *        If `false`, returns the insertion position.
-	 * @returns {number} The index of the key, insertion position, or -1 if not found (when `shouldMatch` is true)
+	 * By default, returns the index of the greatest key less than or equal to `key`.
+	 * If `isUpperBound` is `true`, returns the index of the smallest key greater than
+	 * or equal to `key`.
+	 * 
+	 * @param {K} key The key to search around
+	 * @param {boolean} [isUpperBound=false] If `true`, searches for the closest greater-or-equal key.
+	 *        If `false`, searches for the closest less-or-equal key.
+	 * @param {boolean} [shouldMatch=false] If `true`, returns an index only when an exactly matching key exists.
+	 * @returns {number} The matching/closest key index, or `-1` if no suitable key exists
 	 * 
 	 * @example
 	 * const map = new OrderedMap([['a', 1], ['c', 3]]);
-	 * console.log(map.getIndex('a'));           // 0
-	 * console.log(map.getIndex('b'));           // 1 (insertion position)
-	 * console.log(map.getIndex('b', false, true)); // -1 (not found with shouldMatch=true)
+	 * 
+	 * console.log(map.getIndex('a'));              // 0, exact match
+	 * console.log(map.getIndex('b'));              // 0, closest less-or-equal key is 'a'
+	 * console.log(map.getIndex('b', true));        // 1, closest greater-or-equal key is 'c'
+	 * console.log(map.getIndex('b', false, true)); // -1, no exact match
 	 */
 	getIndex(key, isUpperBound = false, shouldMatch = false) {
 		let node = this.#root;
@@ -674,27 +680,31 @@ export default class OrderedMap {
 	 * Finds the closest [key, value] entry to the given key.
 	 * 
 	 * "Closest" means:
-	 * - Lower bound (default): The entry with the largest key <= the query key
-	 * - Upper bound: The entry with the smallest key >= the query key
+	 * - Lower bound: the entry with the greatest key less than or equal to `key`
+	 * - Upper bound: the entry with the smallest key greater than or equal to `key`
 	 * 
 	 * @param {K} key The reference key
-	 * @param {boolean} [isUpperBound=false] If `true`, finds the upper bound (next entry).
-	 *        If `false`, finds the lower bound (previous or equal entry).
-	 * @param {boolean} [canMatch=true] If `true`, the exact key is a valid result.
-	 *        If `false`, skips over the exact key.
-	 * @returns {[K, V] | undefined} A [key, value] tuple of the closest entry, 
+	 * @param {boolean} [isUpperBound=false] If `true`, searches for the closest greater-or-equal entry.
+	 *        If `false`, searches for the closest less-or-equal entry.
+	 * @param {boolean} [canMatch=true] If `true`, an exact match is allowed.
+	 *        If `false`, searches only for a strictly smaller or strictly greater key.
+	 * @returns {[K, V] | undefined} A [key, value] tuple of the closest entry,
 	 *          or `undefined` if no such entry exists
 	 * 
 	 * @example
 	 * const map = new OrderedMap([['a', 'apple'], ['c', 'cherry'], ['e', 'elderberry']]);
 	 * 
-	 * // Range queries
 	 * const lower = map.getClosestEntry('d', false); // ['c', 'cherry']
 	 * const upper = map.getClosestEntry('d', true);  // ['e', 'elderberry']
 	 * 
 	 * // Find entries in range
-	 * for (const [k, v] of map.entries(...)) {
-	 *   if (k >= 'b' && k <= 'd') console.log(v);
+	 * const start = map.getIndex('b', true);
+	 * const end = map.getIndex('d');
+	 * 
+	 * if (start !== -1 && end !== -1 && start <= end) {
+	 *   for (const [k, v] of map.entries(start, end - start + 1)) {
+	 *     console.log(k, v);
+	 *   }
 	 * }
 	 */
 	getClosestEntry(key, isUpperBound = false, canMatch = true) {
@@ -910,7 +920,7 @@ export default class OrderedMap {
 	 * }
 	 * 
 	 * // Last 2 keys backwards
-	 * for (const key of map.keys(-2, -2)) {
+	 * for (const key of map.keys(-1, -2)) {
 	 *   console.log(key); // c, b
 	 * }
 	 */
