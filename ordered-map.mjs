@@ -187,7 +187,7 @@ export default class OrderedMap {
 			if (caller === this.getOrInsert) {
 				returnValue = value;
 			} else if (caller === this.getOrInsertComputed) {
-				returnValue = value = value();
+				returnValue = value = value(key);
 			}
 
 			child.keys.splice(index + 1, 0, key);
@@ -359,8 +359,6 @@ export default class OrderedMap {
 	 *   - Two arguments: Creates a map from iterable entries with custom comparator
 	 *   - Can also accept another OrderedMap to clone it
 	 * 
-	 * @throws {TypeError} If a comparator function is not a function when expected
-	 * 
 	 * @example
 	 * // Empty map with default comparator
 	 * const map1 = new OrderedMap();
@@ -472,14 +470,18 @@ export default class OrderedMap {
 	/**
 	 * Gets the value for a key, or inserts a default value if the key doesn't exist.
 	 * 
+	 * If the key is already present, returns the existing value without modifying the map.
+	 * If the key is not present, inserts `defaultValue` for that key and returns it.
+	 * 
 	 * @param {K} key The key to look up or insert
 	 * @param {V} defaultValue The value to insert if the key doesn't exist
 	 * @returns {V} The existing value, or the inserted default value
 	 * 
 	 * @example
 	 * const map = new OrderedMap();
-	 * const val1 = map.getOrInsert('a', 42); // 42 (inserted)
-	 * const val2 = map.getOrInsert('a', 99); // 42 (existing value)
+	 * 
+	 * const val1 = map.getOrInsert('a', 42); // 42, inserted
+	 * const val2 = map.getOrInsert('a', 99); // 42, existing value
 	 */
 	getOrInsert(key, defaultValue) {
 		return this.#internalGetOrInsert(key, defaultValue, this.getOrInsert);
@@ -488,18 +490,24 @@ export default class OrderedMap {
 	/**
 	 * Gets the value for a key, or computes and inserts a value if the key doesn't exist.
 	 * 
-	 * The default creator function is only called if the key doesn't exist, making this
-	 * efficient for expensive computations.
+	 * If the key is already present, returns the existing value without calling `defaultCreator`.
+	 * If the key is not present, calls `defaultCreator` with `key`, inserts the returned value,
+	 * and returns it.
 	 * 
 	 * @param {K} key The key to look up or insert
-	 * @param {() => V} defaultCreator A function that computes the value to insert
+	 * @param {(key: K) => V} defaultCreator A function that computes the value to insert.
+	 *        It is called only when the key doesn't exist.
 	 * @returns {V} The existing value, or the computed and inserted value
-	 * @throws {TypeError} If defaultCreator is not a function
+	 * @throws {TypeError} If `defaultCreator` is not a function
 	 * 
 	 * @example
 	 * const map = new OrderedMap();
-	 * const val1 = map.getOrInsertComputed('a', () => expensiveComputation()); // computed
-	 * const val2 = map.getOrInsertComputed('a', () => expensiveComputation()); // cached
+	 * 
+	 * const val1 = map.getOrInsertComputed('a', key => `default for ${key}`);
+	 * // 'default for a', computed and inserted
+	 * 
+	 * const val2 = map.getOrInsertComputed('a', key => `new default for ${key}`);
+	 * // 'default for a', existing value; callback is not called
 	 */
 	getOrInsertComputed(key, defaultCreator) {
 		if (typeof defaultCreator !== 'function') {

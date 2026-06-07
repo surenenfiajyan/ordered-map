@@ -57,7 +57,13 @@ ___
 	___
 * ```getOrInsertComputed(key, defaultCreator)```
 	#### Description
-	Searches for a given key. Returns the associated value if present. If the key isn't found, the key will be associated with the returned value of callback ```defaultValue```, and the return value will be that associated value.
+	Searches for a given key. Returns the associated value if present. If the key isn't found, the key will be associated with the value returned by ```defaultCreator```, and the return value will be that associated value.
+
+	```key``` is the searched key.
+
+	```defaultCreator(key)``` is a function to execute when the key isn't found.
+
+	```key``` is passed to ```defaultCreator``` as its argument.
 
 	This is useful when the default value construction is expensive, otherwise use ```getOrInsert```.
 	___
